@@ -1,9 +1,8 @@
 import { Formik, Field, ErrorMessage } from 'formik';
-import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
 import { ButtonContact, Form } from './PhoneFormStyled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPhoneNumber } from '../../redux/contactSlice/contactSlice';
+import { addContactThunk } from '../../redux/thunk/thunk';
 import { Notify } from 'notiflix';
 
 const PhoneSchema = Yup.object().shape({
@@ -19,7 +18,7 @@ const PhoneSchema = Yup.object().shape({
 
 export const PhoneForm = () => {
   const dispatch = useDispatch();
-  const contactsSelector = useSelector(state => state.contacts.contacts);
+  const contactsSelector = useSelector(state => state.contacts.contacts.items);
 
   return (
     <div>
@@ -36,8 +35,7 @@ export const PhoneForm = () => {
           )
             ? Notify.failure(values.name + 'is already in contact')
             : dispatch(
-                addPhoneNumber({
-                  id: nanoid(),
+                addContactThunk({
                   ...values,
                 })
               );
