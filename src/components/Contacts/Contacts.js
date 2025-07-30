@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Filter } from 'components/filter/Filter';
-import { removeContact } from '../../redux/contactSlice/contactSlice';
+// import { removeContact } from '../../redux/contactSlice/contactSlice';
+import { deleteContactThunk } from '../../redux/thunk/thunk';
 import {
   LiStyle,
   UlStyle,
@@ -10,11 +11,11 @@ import {
 } from './ContactsStyled';
 
 export const Contacts = () => {
-  const InitialContacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filter);
+  const initialContacts = useSelector(state => state.contacts.contacts.items);
+  const filter = useSelector(state => state.filter);
   const dispatch = useDispatch();
 
-  const filteredContacts = InitialContacts.items.filter(contact =>
+  const filteredContacts = initialContacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
@@ -28,7 +29,7 @@ export const Contacts = () => {
             <LiStyle key={id}>
               {name}: {number}
               <ButtonDel>
-                <MdDelete onClick={() => dispatch(removeContact(id))} />
+                <MdDelete onClick={() => dispatch(deleteContactThunk(id))} />
               </ButtonDel>
             </LiStyle>
           ))}
